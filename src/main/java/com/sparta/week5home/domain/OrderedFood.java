@@ -10,13 +10,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class OrderedFood {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
     // 주문 번호
-    @Column(nullable = false)
-    private Long orderId;
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     // 메뉴 번호
     @Column(nullable = false)
@@ -26,8 +27,8 @@ public class OrderedFood {
     @Column(nullable = false)
     private int quantity;
 
-    public OrderedFood(Long orderId, String foodName, int quantity){
-        this.orderId = orderId;
+    public OrderedFood(Order order, String foodName, int quantity){
+        this.order = order;
         this.foodName = foodName;
         this.quantity = quantity;
     }
