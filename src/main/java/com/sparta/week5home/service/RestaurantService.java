@@ -3,7 +3,6 @@ package com.sparta.week5home.service;
 import com.sparta.week5home.dto.RestaurantDto;
 import com.sparta.week5home.domain.Restaurant;
 import com.sparta.week5home.repository.RestaurantRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,7 +11,6 @@ import java.util.List;
 @Service
 public class RestaurantService {
 
-    @Autowired
     private final RestaurantRepository restaurantRepository;
     public RestaurantService(RestaurantRepository restaurantRepository){
         this.restaurantRepository = restaurantRepository;

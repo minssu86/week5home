@@ -12,27 +12,21 @@ import com.sparta.week5home.repository.FoodRepository;
 import com.sparta.week5home.repository.OrderRepository;
 import com.sparta.week5home.repository.OrderedFoodRepository;
 import com.sparta.week5home.repository.RestaurantRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
 public class OrderService {
 
-    @Autowired
     private final OrderRepository orderRepository;
 
-    @Autowired
     private final OrderedFoodRepository orderedFoodRepository;
 
-    @Autowired
     private final RestaurantRepository restaurantRepository;
 
-    @Autowired
     private final FoodRepository foodRepository;
 
 

@@ -3,7 +3,6 @@ package com.sparta.week5home.controller;
 import com.sparta.week5home.dto.RestaurantDto;
 import com.sparta.week5home.domain.Restaurant;
 import com.sparta.week5home.service.RestaurantService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +13,6 @@ import java.util.List;
 @RestController
 public class RestaurantController {
 
-    @Autowired
     private final RestaurantService restaurantService;
     public RestaurantController(RestaurantService restaurantService){
         this.restaurantService = restaurantService;
