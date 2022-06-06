@@ -52,10 +52,11 @@ public class OrderService {
                 ()-> new NullPointerException("등록되지 않은 가게 입니다.")
         );
 
-        // 주문서 1차 작성(주문서 ID 확보 용)
+        // 주문서 작성
         Order order = new Order(restaurant);
         orderRepository.save(order);
 
+        // 전체 주문 음식 비용 확인용
         int totalFoodPrice = 0;
         List<OrderedFoodDto> orderedFoodDtos = new ArrayList<>();
         // DB에 주문 정보 저장

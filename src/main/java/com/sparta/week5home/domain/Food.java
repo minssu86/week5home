@@ -22,14 +22,15 @@ public class Food {
     @Column(nullable = false)
     private int price;
 
-    // 음식점 ID
-    @Column(nullable = false)
-    private Long restaurantId;
+    // 음식점 ID    Join 사용할 필요가 있을까??
+    @ManyToOne
+    @JoinColumn(name = "restaurantId")
+    private Restaurant restaurant;
 
 
-    public Food(Long restaurantId, FoodDto requestDto) {
+    public Food(Restaurant restaurant, FoodDto requestDto) {
         this.name = requestDto.getName();
         this.price = requestDto.getPrice();
-        this.restaurantId = restaurantId;
+        this.restaurant = restaurant;
     }
 }

@@ -19,13 +19,17 @@ public class OrderedFood {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    // 메뉴 번호
+    // 음식명
     @Column(nullable = false)
     private String foodName;
 
     // 메뉴 수량
     @Column(nullable = false)
     private int quantity;
+
+    // 메뉴 수량 * 메뉴 가격
+    @Column(nullable = false)
+    private int price;
 
     public OrderedFood(Order order, String foodName, int quantity){
         this.order = order;

@@ -1,8 +1,10 @@
 package com.sparta.week5home.service;
 
+import com.sparta.week5home.domain.Restaurant;
 import com.sparta.week5home.dto.FoodDto;
 import com.sparta.week5home.domain.Food;
 import com.sparta.week5home.repository.FoodRepository;
+import com.sparta.week5home.repository.RestaurantRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,14 +15,20 @@ import java.util.List;
 public class FoodService {
 
     private final FoodRepository foodRepository;
+    private final RestaurantRepository restaurantRepository;
 
-    public FoodService(FoodRepository foodRepository){
+    public FoodService(FoodRepository foodRepository, RestaurantRepository restaurantRepository){
         this.foodRepository = foodRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     // 음식 등록
     @Transactional
     public void register(Long restaurantId, List<FoodDto> requestDtoList) {
+        // 식당 정보 불러오기
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
+                ()-> new NullPointerException("존재 하지 않는 식당 입니다.")
+        );
 
         for(FoodDto requestDto:requestDtoList){
             // 기등록 음식 확인
@@ -31,8 +39,9 @@ public class FoodService {
             }
 
             // DB에 음식 정보 저장
-            Food food = new Food(restaurantId, requestDto);
+            Food food = new Food(restaurant, requestDto);
             foodRepository.save(food);
+
         }
     }
 

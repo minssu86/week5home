@@ -37,8 +37,3 @@ public class RestaurantService {
 }
 
 
-//{
-//        "name":"자담치킨",
-//        "minOrderPrice": 1000,
-//        "deliveryFee": 0
-//        }
