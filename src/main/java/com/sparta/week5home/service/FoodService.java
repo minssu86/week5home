@@ -1,13 +1,15 @@
 package com.sparta.week5home.service;
 
 import com.sparta.week5home.domain.Restaurant;
-import com.sparta.week5home.dto.FoodDto;
+import com.sparta.week5home.dto.requestDto.FoodRequestDto;
 import com.sparta.week5home.domain.Food;
+import com.sparta.week5home.dto.responseDto.FoodResponseDto;
 import com.sparta.week5home.repository.FoodRepository;
 import com.sparta.week5home.repository.RestaurantRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.DuplicateFormatFlagsException;
 import java.util.List;
 
@@ -24,13 +26,13 @@ public class FoodService {
 
     // 음식 등록
     @Transactional
-    public void register(Long restaurantId, List<FoodDto> requestDtoList) {
+    public void register(Long restaurantId, List<FoodRequestDto> requestDtoList) {
         // 식당 정보 불러오기
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
                 ()-> new NullPointerException("존재 하지 않는 식당 입니다.")
         );
 
-        for(FoodDto requestDto:requestDtoList){
+        for(FoodRequestDto requestDto:requestDtoList){
             // 기등록 음식 확인
             if(foodRepository.findByRestaurantIdAndName(restaurantId, requestDto.getName())!=null){
                 throw new DuplicateFormatFlagsException("이미 존재하는 메뉴입니다.");
@@ -41,11 +43,15 @@ public class FoodService {
             // DB에 음식 정보 저장
             Food food = new Food(restaurant, requestDto);
             foodRepository.save(food);
-
         }
     }
 
-    public List<Food> getFoods(Long restaurantId) {
-        return foodRepository.findAllByRestaurantId(restaurantId);
+    // 음식 목록 조회
+    public List<FoodResponseDto> getFoods(Long restaurantId) {
+        List<FoodResponseDto> foodResponseDtos = new ArrayList<>();
+        for(Food food : foodRepository.findAllByRestaurantId(restaurantId)){
+            foodResponseDtos.add(new FoodResponseDto(food));
+        }
+        return foodResponseDtos;
     }
 }

@@ -27,14 +27,15 @@ public class OrderedFood {
     @Column(nullable = false)
     private int quantity;
 
-    // 메뉴 수량 * 메뉴 가격
+    // 메뉴 가격 (수량 * 음식 가격)
     @Column(nullable = false)
     private int price;
 
-    public OrderedFood(Order order, String foodName, int quantity){
+    public OrderedFood(Order order, String foodName, int quantity, int price){
         this.order = order;
         this.foodName = foodName;
         this.quantity = quantity;
+        this.price = price;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.sparta.week5home.dto;
+package com.sparta.week5home.dto.requestDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,5 +9,5 @@ import java.util.List;
 @Builder
 public class OrderRequestDto {
     private final Long restaurantId;
-    private final List<FoodOrderRequestDto> foods;
+    private final List<OrderFoodRequestDto> foods;
 }

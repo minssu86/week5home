@@ -1,7 +1,7 @@
 package com.sparta.week5home.controller;
 
-import com.sparta.week5home.dto.FoodDto;
-import com.sparta.week5home.domain.Food;
+import com.sparta.week5home.dto.requestDto.FoodRequestDto;
+import com.sparta.week5home.dto.responseDto.FoodResponseDto;
 import com.sparta.week5home.service.FoodService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +18,13 @@ public class FoodController {
 
     // 음식 등록
     @PostMapping("/restaurant/{restaurantId}/food/register")
-    public void registerFood(@PathVariable Long restaurantId, @RequestBody List<FoodDto> requestDtoList){
+    public void registerFood(@PathVariable Long restaurantId, @RequestBody List<FoodRequestDto> requestDtoList){
         foodService.register(restaurantId, requestDtoList);
     }
 
     // 음식 조회
     @GetMapping("/restaurant/{restaurantId}/foods")
-    public List<Food> getFoods(@PathVariable Long restaurantId){
+    public List<FoodResponseDto> getFoods(@PathVariable Long restaurantId){
         return foodService.getFoods(restaurantId);
     }
 

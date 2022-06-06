@@ -1,6 +1,6 @@
 package com.sparta.week5home.domain;
 
-import com.sparta.week5home.dto.FoodDto;
+import com.sparta.week5home.dto.requestDto.FoodRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +28,7 @@ public class Food {
     private Restaurant restaurant;
 
 
-    public Food(Restaurant restaurant, FoodDto requestDto) {
+    public Food(Restaurant restaurant, FoodRequestDto requestDto) {
         this.name = requestDto.getName();
         this.price = requestDto.getPrice();
         this.restaurant = restaurant;

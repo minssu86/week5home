@@ -13,18 +13,22 @@ public class Order {
     @Id
     private Long id;
 
-    @Column(nullable = false)
-    private String restaurantName;
 
-    @Column(nullable = false)
-    private int deliveryFee;
+    // 음식점 ID
+    @ManyToOne
+    @JoinColumn(name = "restaurantId")
+    private Restaurant restaurant;
+//    private String restaurantName;
 
+//    @Column(nullable = false)
+//    private int deliveryFee;
+
+    // 주문 총 비용
     @Column(nullable = false)
     private int totalPrice;
 
     public Order(Restaurant restaurant){
-        this.restaurantName=restaurant.getName();
-        this.deliveryFee=restaurant.getDeliveryFee();
+        this.restaurant=restaurant;
         this.totalPrice=0;
     }
 

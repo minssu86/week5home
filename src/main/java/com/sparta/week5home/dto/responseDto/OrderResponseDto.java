@@ -1,4 +1,4 @@
-package com.sparta.week5home.dto;
+package com.sparta.week5home.dto.responseDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 public class OrderResponseDto {
     private String restaurantName;
-    private List<OrderedFoodDto> foods;
+    private List<OrderedFoodResponseDto> foods;
     private int deliveryFee;
     private int totalPrice;
 }

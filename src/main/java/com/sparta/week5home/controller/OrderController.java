@@ -1,7 +1,7 @@
 package com.sparta.week5home.controller;
 
-import com.sparta.week5home.dto.OrderRequestDto;
-import com.sparta.week5home.dto.OrderResponseDto;
+import com.sparta.week5home.dto.requestDto.OrderRequestDto;
+import com.sparta.week5home.dto.responseDto.OrderResponseDto;
 import com.sparta.week5home.service.OrderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

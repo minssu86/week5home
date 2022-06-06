@@ -4,10 +4,10 @@ import com.sparta.week5home.domain.Food;
 import com.sparta.week5home.domain.Order;
 import com.sparta.week5home.domain.OrderedFood;
 import com.sparta.week5home.domain.Restaurant;
-import com.sparta.week5home.dto.FoodOrderRequestDto;
-import com.sparta.week5home.dto.OrderRequestDto;
-import com.sparta.week5home.dto.OrderResponseDto;
-import com.sparta.week5home.dto.OrderedFoodDto;
+import com.sparta.week5home.dto.requestDto.OrderFoodRequestDto;
+import com.sparta.week5home.dto.requestDto.OrderRequestDto;
+import com.sparta.week5home.dto.responseDto.OrderResponseDto;
+import com.sparta.week5home.dto.responseDto.OrderedFoodResponseDto;
 import com.sparta.week5home.repository.FoodRepository;
 import com.sparta.week5home.repository.OrderRepository;
 import com.sparta.week5home.repository.OrderedFoodRepository;
@@ -22,13 +22,9 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-
     private final OrderedFoodRepository orderedFoodRepository;
-
     private final RestaurantRepository restaurantRepository;
-
     private final FoodRepository foodRepository;
-
 
     public OrderService(
             OrderRepository orderRepository,
@@ -58,67 +54,78 @@ public class OrderService {
 
         // 전체 주문 음식 비용 확인용
         int totalFoodPrice = 0;
-        List<OrderedFoodDto> orderedFoodDtos = new ArrayList<>();
+
+        // response 용 주문 목록
+        List<OrderedFoodResponseDto> orderedFoodResponseDtos = new ArrayList<>();
+
         // DB에 주문 정보 저장
-        for(FoodOrderRequestDto foodOrderRequestDto : requestDto.getFoods()){
-            // 요리 정보 불러오기
-            // 요리 이름과 가격 정보 불러오기
-            Food food = foodRepository.findByRestaurantIdAndId(requestDto.getRestaurantId(), foodOrderRequestDto.getId());
+        for(OrderFoodRequestDto orderFoodRequestDto : requestDto.getFoods()){
+            // 음식점 ID와, 요리 ID로 요리정보 불러오기
+            Food food = foodRepository.findByRestaurantIdAndId(requestDto.getRestaurantId(), orderFoodRequestDto.getId());
+
+            // 유효성 검사 : 수량 확인
+            if(orderFoodRequestDto.getQuantity()>100 || orderFoodRequestDto.getQuantity()<0){
+                throw new IllegalArgumentException("주문 수량이 가능 범위를 초과 하였습니다.");
+            }
 
             // 주문 받은 요리 목록 저장
-            OrderedFood orderedFood = new OrderedFood(order, food.getName(), foodOrderRequestDto.getQuantity());
-
-           // Response용
-            OrderedFoodDto orderedFoodDto = new OrderedFoodDto(food.getName(), foodOrderRequestDto.getQuantity(), food.getPrice()*foodOrderRequestDto.getQuantity());
-            orderedFoodDtos.add(orderedFoodDto);
+            OrderedFood orderedFood = new OrderedFood(
+                    order,
+                    food.getName(),
+                    orderFoodRequestDto.getQuantity(),
+                    food.getPrice()* orderFoodRequestDto.getQuantity()
+            );
 
             // DB 저장
             orderedFoodRepository.save(orderedFood);
-            if(foodOrderRequestDto.getQuantity()>100 || foodOrderRequestDto.getQuantity()<0){
-                throw new IllegalArgumentException("주문 수량이 가능 범위를 초과 하였습니다.");
-            }
-            totalFoodPrice += food.getPrice() * foodOrderRequestDto.getQuantity();
+
+            // Response 용 요리 목록
+            OrderedFoodResponseDto orderedFoodResponseDto = new OrderedFoodResponseDto(orderedFood);
+            orderedFoodResponseDtos.add(orderedFoodResponseDto);
+
+            // 전체 요리 비용 연산
+            totalFoodPrice += orderedFoodResponseDto.getPrice();
         }
 
+        // 유효성 검사 : 최소 주문 금액
         if(totalFoodPrice <= restaurant.getMinOrderPrice()){
             throw new IllegalArgumentException("주문 금액이 작습니다");
         }
 
         // 주문서 최종 작성(totalPrice 추가)
         order.saveTotalPrice(totalFoodPrice + restaurant.getDeliveryFee());
-        orderRepository.save(order);
 
         return OrderResponseDto.builder()
-                .restaurantName(restaurant.getName())
-                .foods(orderedFoodDtos)
-                .deliveryFee(restaurant.getDeliveryFee())
+                .restaurantName(order.getRestaurant().getName())
+                .foods(orderedFoodResponseDtos)
+                .deliveryFee(order.getRestaurant().getDeliveryFee())
                 .totalPrice(totalFoodPrice + restaurant.getDeliveryFee())
                 .build();
     }
 
 
-
+    // 전체 주문 목록 조회
     public List<OrderResponseDto> getOrders() {
 
         // 전체 주문서 가져오기
         List<Order> orders = orderRepository.findAll();
         List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
-        List<OrderedFoodDto> orderedFoodDtos = new ArrayList<>();
+        List<OrderedFoodResponseDto> orderedFoodResponseDtos = new ArrayList<>();
 
         OrderResponseDto orderResponseDto = OrderResponseDto.builder().build();
         for(Order order : orders){
-            Restaurant restaurant = restaurantRepository.findByName(order.getRestaurantName());
+            Restaurant restaurant = restaurantRepository.findByName(order.getRestaurant().getName());
 
             List<OrderedFood> orderedFoods = orderedFoodRepository.findAllByOrderId(order.getId());
-            for(OrderedFood o : orderedFoods){
-                Food food = foodRepository.findByRestaurantIdAndName(restaurant.getId(),o.getFoodName());
-                OrderedFoodDto orderedFoodDto = new OrderedFoodDto(o.getFoodName(),o.getQuantity(),food.getPrice()*o.getQuantity());
-                orderedFoodDtos.add(orderedFoodDto);
+            for(OrderedFood orderedFood : orderedFoods){
+                Food food = foodRepository.findByRestaurantIdAndName(restaurant.getId(),orderedFood.getFoodName());
+                OrderedFoodResponseDto orderedFoodResponseDto = new OrderedFoodResponseDto(orderedFood);
+                orderedFoodResponseDtos.add(orderedFoodResponseDto);
             }
 
-            orderResponseDto.setFoods(orderedFoodDtos);
-            orderResponseDto.setRestaurantName(order.getRestaurantName());
-            orderResponseDto.setDeliveryFee(order.getDeliveryFee());
+            orderResponseDto.setFoods(orderedFoodResponseDtos);
+            orderResponseDto.setRestaurantName(order.getRestaurant().getName());
+            orderResponseDto.setDeliveryFee(order.getRestaurant().getDeliveryFee());
             orderResponseDto.setTotalPrice(order.getTotalPrice());
 
             orderResponseDtos.add(orderResponseDto);

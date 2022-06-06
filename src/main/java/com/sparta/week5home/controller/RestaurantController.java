@@ -1,7 +1,7 @@
 package com.sparta.week5home.controller;
 
-import com.sparta.week5home.dto.RestaurantDto;
-import com.sparta.week5home.domain.Restaurant;
+import com.sparta.week5home.dto.requestDto.RestaurantRequestDto;
+import com.sparta.week5home.dto.responseDto.RestaurantResponseDto;
 import com.sparta.week5home.service.RestaurantService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,15 +20,14 @@ public class RestaurantController {
 
     // 음식점 등록
     @PostMapping("/restaurant/register")
-    public Restaurant registerRestaurant(@RequestBody RestaurantDto requestDto){
+    public RestaurantResponseDto registerRestaurant(@RequestBody RestaurantRequestDto requestDto){
         return restaurantService.register(requestDto);
     }
 
     // 음식점 조회
     @GetMapping("/restaurants")
-    public List<Restaurant> getRestaurants(){
+    public List<RestaurantResponseDto> getRestaurants(){
         return restaurantService.getRestaurants();
     }
-
 
 }
