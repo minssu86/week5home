@@ -1,4 +1,4 @@
-package com.sparta.week5home.domain;
+package com.sparta.week5home.model.restaurantDomain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,19 +13,12 @@ public class Order {
     @Id
     private Long id;
 
-
-    // 음식점 ID
     @ManyToOne
     @JoinColumn(name = "restaurantId")
-    private Restaurant restaurant;
-//    private String restaurantName;
+    private Restaurant restaurant;  // 음식점 ID
 
-//    @Column(nullable = false)
-//    private int deliveryFee;
-
-    // 주문 총 비용
     @Column(nullable = false)
-    private int totalPrice;
+    private int totalPrice;  // 주문 총 비용
 
     public Order(Restaurant restaurant){
         this.restaurant=restaurant;
@@ -35,5 +28,6 @@ public class Order {
     public void saveTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
+
 }
 

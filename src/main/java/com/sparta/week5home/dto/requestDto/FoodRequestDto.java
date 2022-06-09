@@ -1,6 +1,5 @@
 package com.sparta.week5home.dto.requestDto;
 
-
 import lombok.Builder;
 import lombok.Getter;
 

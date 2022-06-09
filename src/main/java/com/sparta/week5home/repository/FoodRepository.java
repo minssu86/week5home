@@ -1,6 +1,6 @@
 package com.sparta.week5home.repository;
 
-import com.sparta.week5home.domain.Food;
+import com.sparta.week5home.model.restaurantDomain.Food;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

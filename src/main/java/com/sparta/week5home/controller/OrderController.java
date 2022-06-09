@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
 @RestController
 public class OrderController {
 
@@ -24,7 +23,7 @@ public class OrderController {
     public OrderResponseDto orderFoods(@RequestBody OrderRequestDto requestDto){ return orderService.orderFoods(requestDto);}
 
     // 전체 주문 조회
-    @GetMapping("orders")
+    @GetMapping("/orders")
     public List<OrderResponseDto> getOrders(){
         return orderService.getOrders();
     }

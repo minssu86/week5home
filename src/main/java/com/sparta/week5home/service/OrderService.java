@@ -1,9 +1,9 @@
 package com.sparta.week5home.service;
 
-import com.sparta.week5home.domain.Food;
-import com.sparta.week5home.domain.Order;
-import com.sparta.week5home.domain.OrderedFood;
-import com.sparta.week5home.domain.Restaurant;
+import com.sparta.week5home.model.restaurantDomain.Food;
+import com.sparta.week5home.model.restaurantDomain.Order;
+import com.sparta.week5home.model.restaurantDomain.OrderedFood;
+import com.sparta.week5home.model.restaurantDomain.Restaurant;
 import com.sparta.week5home.dto.requestDto.OrderFoodRequestDto;
 import com.sparta.week5home.dto.requestDto.OrderRequestDto;
 import com.sparta.week5home.dto.responseDto.OrderResponseDto;

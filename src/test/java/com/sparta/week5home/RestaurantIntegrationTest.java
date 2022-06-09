@@ -2,6 +2,10 @@ package com.sparta.week5home;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.week5home.controller.UserController;
+import com.sparta.week5home.dto.requestDto.LoginRequestDto;
+import com.sparta.week5home.dto.requestDto.SignupRequestDto;
+import com.sparta.week5home.model.UserRoleEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,16 +26,30 @@ import static org.junit.jupiter.api.Assertions.*;
 class RestaurantIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
+    @Autowired
+    private UserController userController;
 
     private HttpHeaders headers;
     private ObjectMapper mapper = new ObjectMapper();
 
     private final List<RestaurantDto> registeredRestaurants = new ArrayList<>();
 
+
+
     @BeforeEach
     public void setup() {
+        // 회원 정보 등록
+        userController.registerUser(
+                SignupRequestDto.builder()
+                        .username("tester02")
+                        .password("1234")
+                        .role(UserRoleEnum.ADMIN)
+                        .build()
+        );
         headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        // 로그인용 토큰 세팅
+        headers.set("Authorization", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIwMiIsImlhdCI6MTY1NDc1ODYxOCwiZXhwIjoxNjU3MzUwNjE4fQ.qUFw1_2zvGGvOXj6268idlH-CoAjDI9jJlcBrpN2iww");
     }
 
     @Nested
@@ -350,4 +368,21 @@ class RestaurantIntegrationTest {
         private int minOrderPrice;
         private int deliveryFee;
     }
+
+//    @Getter
+//    @Setter
+//    @Builder
+//    static class SignupRequestDto {
+//        private String username;
+//        private String password;
+//        private UserRoleEnum role;
+//    }
+//
+//    @Getter
+//    @Setter
+//    @Builder
+//    static class LoginRequestDto {
+//        private final String username;
+//        public final String password;
+//    }
 }

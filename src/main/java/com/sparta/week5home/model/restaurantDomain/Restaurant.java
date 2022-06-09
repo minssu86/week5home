@@ -1,4 +1,4 @@
-package com.sparta.week5home.domain;
+package com.sparta.week5home.model.restaurantDomain;
 
 import com.sparta.week5home.dto.requestDto.RestaurantRequestDto;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class Restaurant {
     private Long id;
 
     // 음식점 이름
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     // 최소 주문 가격

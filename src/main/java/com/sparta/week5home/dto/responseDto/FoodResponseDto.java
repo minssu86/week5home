@@ -1,6 +1,6 @@
 package com.sparta.week5home.dto.responseDto;
 
-import com.sparta.week5home.domain.Food;
+import com.sparta.week5home.model.restaurantDomain.Food;
 import lombok.Getter;
 
 @Getter
