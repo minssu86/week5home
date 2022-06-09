@@ -5,8 +5,6 @@ import com.sparta.week5home.dto.responseDto.RestaurantResponseDto;
 import com.sparta.week5home.exception.RestApiException;
 import com.sparta.week5home.model.UserRoleEnum;
 import com.sparta.week5home.service.RestaurantService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
